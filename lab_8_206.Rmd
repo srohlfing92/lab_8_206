@@ -1,0 +1,57 @@
+---
+title: "lab_8_206"
+author: "Sarah Rohlfing"
+date: "11/15/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+#attach
+library(stargazer)
+library(tidyverse)
+library(broom)
+library(modelsummary)
+library(here)
+library(corrplot)
+library(janitor)
+```
+
+```{r}
+homes <- read_csv(here("data","slo_homes.csv")) %>% 
+  clean_names()
+```
+unique(homes$city) down in the console
+make a subset called homes_sub that only contains obs. (rows) where the city is:
+
+```{r}
+homes_sub <- homes %>% 
+  filter(city %in% c("San Luis Obispo", "Arroyo Grande", "Atascadero", "Santa Maria-Orcutt"))
+```
+
+## Do a little exploring of our data
+sum statistics (home price, based on city and sale status)
+```{r}
+homes_sub %>% 
+  group_by(city, status) %>% 
+  summarise(mean_price = mean(price, na.rm = TRUE), 
+            sd_price = sd(price, na.rm = TRUE))
+
+# if you don't even want the code to run: eval = FALSE
+
+ggplot(data = homes_sub, aes(x = price))+
+  geom_density(aes(color = city, fill = city), alpha = 0.2)+
+  scale_x_continuous(limits = c(0, 3e6))
+```
+
+explore the relationship (visual data exploration)btwn square footage and home price.
+```{r}
+ggplot(data = homes_sub, aes(x = sq_ft, y = price))+
+  geom_jitter(aes(color = city, shape = city))+
+  geom_smooth(method = lm)
+  
+```
+
+
+
