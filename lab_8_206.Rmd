@@ -54,4 +54,59 @@ ggplot(data = homes_sub, aes(x = sq_ft, y = price))+
 ```
 
 
+## model the relationship with home price as DV
+
+```{r}
+homes_lm1 <- lm(price ~ city + bedrooms + bathrooms + sq_ft + price_per_sq_ft + status, data = homes_sub)
+
+## 
+homes_quant <- homes_sub %>% 
+  select(price:price_per_sq_ft)
+
+homes_cor <- cor(homes_quant)
+homes_cor
+
+corrplot(homes_cor, method = 'ellipse')
+
+homes_lm1
+
+#  diagnostic plots
+plot(homes_lm1)
+
+```
+
+```{r}
+#another model where we simplify
+
+homes_lm2 <- lm(price ~ sq_ft + status + city, data = homes_sub)
+
+
+
+plot(homes_lm2)
+```
+summary(homes_lm1)
+
+adjusted r2red : .84 means 84 percent of variance in home price is explained by these variables. another 16 percent is missing. maybe add proximity to water? you will never have perfect variance. not good of bad, it just is what it is. 
+
+summary(homes_lm2)
+AIC can give us quantitative measure as to how much we it fits
+
+```{r}
+#find aic value aof each model, lower values indicate better balance between fit and complexity
+
+AIC(homes_lm1)
+AIC(homes_lm2)
+
+#we still have major concerns about first model, maybe neither is what you want
+```
+
+
+```{r}
+homes_lm3 <- lm(price ~ city + bedrooms + sq_ft + price_per_sq_ft + status, data = homes_sub)
+plot(homes_lm3)
+AIC(homes_lm3)
+summary(homes_lm3)
+```
+
+
 
