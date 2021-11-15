@@ -108,5 +108,23 @@ AIC(homes_lm3)
 summary(homes_lm3)
 ```
 
+## use 'modelsummary' to show model outputs side-by-side:
+if you use model summary to return model outputs of multiple models, it wants you to feed it to it as a list
+
+```{r}
+modelsummary(list(homes_lm1, homes_lm2, homes_lm3))
+```
+
+## start making predictions with this model
+
+use 'broom::augmant()'
+
+```{r}
+homes_predict <- augment(homes_lm1)
+```
 
 
+'predict()' function to try to predict your model on new scenarios that you create. 
+```{r}
+
+```
